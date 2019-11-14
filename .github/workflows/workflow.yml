@@ -7,11 +7,15 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        version: [v1.6.1, v1.6.0, v1.6.0-alpha.1, v1.5.0, v1.4.3]
+        version: [v1.6.1, v1.6.0, v1.5.0, v1.4.3]
     steps:
       - uses: actions/checkout@v1
+      - run: npm init -y & npm i testcafe-browser-provider-saucelabs
       - name: Run testcafe
         uses: DevExpress/testcafe-action@latest
         with:
-          args: "chrome tests -s path=screens/tmp/notexists/notexists/notexists"
+          args: "saucelabs:chrome tests -s path=screens/tmp/notexists/notexists/notexists"
           version: ${{ matrix.version }}
+        env: # Or as an environment variable
+          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
