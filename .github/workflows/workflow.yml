@@ -1,0 +1,17 @@
+name: Workflow
+on: [push]
+
+jobs:
+  build:
+    name: Seek in version ${{ matrix.version }}
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        version: [v1.6.1, v1.6.0, v1.6.0-alpha.1, v1.5.0, v1.4.3]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run testcafe
+        uses: DevExpress/testcafe-action@latest
+        with:
+          args: "chrome tests -s path=screens/tmp/notexists/notexists/notexists"
+          version: ${{ matrix.version }}
